@@ -76,6 +76,8 @@ Core scripts MUST NOT write client-global configuration. Optional adapters belon
 - game reverse, 游戏逆向, anti-cheat, 反作弊, Unity, IL2CPP, Cheat Engine
 - .NET reverse, C# 逆向, dnSpy, dnSpyEx, de4dot, ConfuserEx, SmartAssembly, .NET Reactor, dnlib, IL patch, SharpHound, Rubeus
 - symbol migration, 符号迁移, bindiff, cross-version, PDB missing
+- WinDbg, kernel debug, 内核调试, crash dump, minidump, 蓝屏, BSOD, driver reverse, 驱动逆向, dump 分析
+- VMware, vSphere, ESXi, vmrun, snapshot, 快照, 靶机, target VM, 虚拟机实验环境, host-only, 实验编排
 - security diagram, 安全图表, attack path diagram, 攻击路径图, security architecture, 安全架构图 — trigger `diagram-generator/`
 
 ---
@@ -202,6 +204,8 @@ After task completion (vulnerability verified / reverse complete / flag captured
 | jshookmcp | — | JS Hook/CDP/Network/AST | `npx -y @jshookmcp/jshook@0.3.4` (stdio) |
 | ghidra | 8765 | Ghidra free decompiler | Ghidra GUI auto-listens after launch |
 | burpsuite | 9876 | BurpSuite 78-tool full control (Proxy/Intruder/Repeater/Scanner/Collaborator) | Burp extension auto-loads |
+| windbg | 8765 | WinDbg 调试 MCP（kd/cdb 会话制，9 工具） | LAN lab-host 192.168.100.175，bootstrap 注册 URL；服务由内网调试机提供 |
+| vmware | 8766 | VMware 实验室 MCP（REST/vmrun/vmcli 三层，130 工具） | LAN lab-host 192.168.100.175，bootstrap 注册 URL；服务由内网调试机提供 |
 
 ---
 
@@ -320,7 +324,7 @@ Windows (PowerShell):
 powershell -NoProfile -ExecutionPolicy Bypass -File "<SKILL_ROOT>/skills/scripts/bootstrap-reverse.ps1" -Capability @('tool_name') -StartServices
 
 Supported capability names (must match `skills/scripts/bootstrap-manifest.json`):  
-jadx, apktool, jeb-pro, frida, frida-ps, idalib-mcp, reqable-mcp, jshookmcp, anything-analyzer, idapro, r2, rabin2, adb, agent-browser, ghidra-mcp, seclists, proxycat, burpsuite-mcp, nmap, pentestswarm, binwalk, yara, pwntools, bkcrack
+jadx, apktool, jeb-pro, frida, frida-ps, idalib-mcp, reqable-mcp, jshookmcp, anything-analyzer, idapro, r2, rabin2, adb, agent-browser, ghidra-mcp, seclists, proxycat, burpsuite-mcp, nmap, pentestswarm, binwalk, yara, pwntools, bkcrack, windbg-mcp, vmware-mcp
 
 Do NOT invent capabilities. Tools not listed require manual install steps in the skill docs.
 ```

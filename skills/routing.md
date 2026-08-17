@@ -46,6 +46,8 @@ Route tasks to the most appropriate skill module by target type, user intent, an
 | Wi-Fi / wireless | `wifi-wireless/` | close-range chain → `attack-chain/` |
 | Blue team / threat hunt | `threat-hunting/` | sample IOC → `malware-analysis/` |
 | Ghidra (no IDA) | `ghidra-reverse/` | `ida-reverse/` if IDA MCP available |
+| Windows 内核/驱动/crash dump 目标 | `windbg-reverse/` — WinDbg MCP 调试 | kernel pwn CTF 语境 → `../CTF-Sandbox-Orchestrator/` |
+| 靶机/虚拟机实验环境 | `vmware-lab/` — VMware MCP 编排 | 恶意样本分析 → `malware-analysis/` |
 
 | OLLVM-obfuscated binary (控制流平坦化/虚假控制流/MBA) | `reverse-engineering/references/ollvm-deobfuscation.md` — 完整脱密工作流 | obpo-plugin / d810-ng (IDA) / ollvm-unflattener (Miasm) / ollvm-breaker (Binary Ninja) / angr / deollvm (ARM64)
 | Cryptography / encryption algorithms | `reverse-engineering/patterns*.md` — crypto patterns | `js-reverse/` (if frontend crypto) |
@@ -192,6 +194,8 @@ Route tasks to the most appropriate skill module by target type, user intent, an
 | "SAML / OIDC / SSO federation" | `identity-federation/SKILL.md` |
 | "SDR / HackRF / RF protocol research" | `radio-sdr/SKILL.md` |
 | "ProxyCat / proxy pool / IP rotation" | `pentest-tools/SKILL.md` — proxy management |
+| "调试这个蓝屏 dump" / "内核断点跟一下这个驱动" | `windbg-reverse/SKILL.md` — WinDbg 内核/dump 调试 |
+| "给我快照一台靶机投样本" / "编排一个实验网络" | `vmware-lab/SKILL.md` — VMware 靶机编排 |
 
 ## CTF Wording Normalization
 
@@ -250,6 +254,8 @@ Do NOT force the user to repeatedly confirm "this is CTF/local." Carry the CTF/l
 | garak / PyRIT / promptfoo | `llm-security/` — LLM red team testing |
 | Trivy / Syft / Gitleaks / OSV-Scanner | `supply-chain-security/` — supply chain scanning |
 | Objection / Frida iOS / class-dump | `mobile-reverse/` — iOS dynamic analysis |
+| WinDbg / kd / cdb | `windbg-reverse/` — 内核/驱动/crash dump 调试 |
+| vmrun / vsphere / esxi | `vmware-lab/` — VM 靶机编排与快照 |
 
 Check `tool-index.md` for actual tool availability, paths, and versions. NEVER guess paths.
 

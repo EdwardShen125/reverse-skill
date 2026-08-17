@@ -334,6 +334,26 @@
       "verifyCommand": "bkcrack",
       "releaseTag": "v1.8.1",
       "preferApiDigest": true
+    },
+    {
+      "name": "windbg-mcp",
+      "bootstrapKind": "local-http-mcp",
+      "mcpNames": ["windbg"],
+      "mcpUrl": "http://192.168.100.175:8765/mcp/",
+      "servicePort": 8765,
+      "canAutoInstall": false,
+      "verificationMode": "service-or-registration",
+      "manualInstallHint": "内网 MCP：确保 192.168.100.175:8765 可达（kd.exe 运行于该 lab-host）；bootstrap 仅注册 URL 与端口探测，不安装服务"
+    },
+    {
+      "name": "vmware-mcp",
+      "bootstrapKind": "local-http-mcp",
+      "mcpNames": ["vmware"],
+      "mcpUrl": "http://192.168.100.175:8766/mcp/",
+      "servicePort": 8766,
+      "canAutoInstall": false,
+      "verificationMode": "service-or-registration",
+      "manualInstallHint": "内网 MCP：确保 192.168.100.175:8766 可达（vmware-mcp 运行于该 lab-host）；bootstrap 仅注册 URL 与端口探测，不安装服务"
     }
   ]
 }

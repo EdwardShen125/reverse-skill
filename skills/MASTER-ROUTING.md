@@ -93,6 +93,8 @@ python3 skills/case-review/scripts/review_case.py work/<case> --verify-hashes --
 | **R36** | 邮件 / 钓鱼分析 | `email-security/` |
 | **R37** | 联邦身份 SAML/OIDC | `identity-federation/` |
 | **R38** | RF / SDR 研究 | `radio-sdr/` |
+| **R41** | WinDbg / kd / cdb / 蓝屏 / dump | `windbg-reverse/` |
+| **R42** | VMware / 靶机 / 快照 / 实验环境 | `vmware-lab/` |
 | **R0** | 通用逆向 / 反调试 / OLLVM / 未知二进制 | `reverse-engineering/` |
 
 未命中强关键词 → PRIMARY=`R0`，并提示打开 `routing.md`。

@@ -296,6 +296,21 @@
         { "must": "case.?review|case.?audit|evidence.?chain|evidence.?graph|traceability|fixity.?check|证据.?链|证据.?图|可追溯性|案件.?审查|案例.?审计" }
       ]
     },
+    "R41": {
+      "label": "WinDbg debug / kernel / dump",
+      "skill": "windbg-reverse/SKILL.md",
+      "keywords": [
+        { "must": "windbg|\\bkd\\b|\\bcdb\\b|crash.?dump|minidump|dump.?分析|蓝屏|bsod|内核.?调试|驱动.?逆向|driver.?reverse|!analyze|ndiskd", "note": "WinDbg/kd/cdb 内核与 dump 调试；kernel pwn CTF 语境仍归 R17" }
+      ]
+    },
+    "R42": {
+      "label": "VMware lab infrastructure",
+      "skill": "vmware-lab/SKILL.md",
+      "keywords": [
+        { "must": "vmware|vsphere|esxi|\\bvmrun\\b|靶机|虚拟机.?环境|host.?only|vm.?编排|实验环境", "note": "VMware 产品名/靶机/实验编排" },
+        { "must": "快照|snapshot", "mustAll": ["靶机|虚拟机|vmware|vsphere|esxi|vmrun|实验|恶意|样本"], "note": "快照需语境限定（mustAll）：与 R9 恶意样本语境叠加时（如『vmware 靶机 快照 恶意样本』）R42 命中 2 规则以 2:1 压过 R9 单规则；裸『快照』（如『Frida hook 快照逻辑』）不命中 R42" }
+      ]
+    },
     "R0": {
       "label": "General reverse-engineering",
       "skill": "reverse-engineering/SKILL.md",
@@ -310,6 +325,6 @@
     "R4", "R1", "R2", "R3", "R30", "R31", "R33", "R5", "R9", "R21",
     "R22", "R6", "R7", "R8", "R34", "R28", "R17", "R16", "R18", "R24",
     "R37", "R23", "R35", "R25", "R36", "R29", "R38", "R32", "R26", "R27",
-    "R10", "R11", "R12", "R13", "R14", "R15", "R19", "R40", "R20", "R39", "R0"
+    "R10", "R11", "R12", "R13", "R14", "R15", "R19", "R40", "R20", "R39", "R41", "R42", "R0"
   ]
 }

@@ -835,6 +835,56 @@
                       "hint":  "case review evidence chain traceability",
                       "expect":  "R40",
                       "quick":  true
+                  },
+                  {
+                      "hint":  "windbg kernel debug driver breakpoint",
+                      "expect":  "R41",
+                      "quick":  true
+                  },
+                  {
+                      "hint":  "分析蓝屏 minidump 崩溃转储",
+                      "expect":  "R41",
+                      "quick":  false
+                  },
+                  {
+                      "hint":  "crash dump !analyze cdb triage",
+                      "expect":  "R41",
+                      "quick":  true
+                  },
+                  {
+                      "hint":  "windbg 调试 NDIS 网络栈逆向 驱动",
+                      "expect":  "R41",
+                      "quick":  false
+                  },
+                  {
+                      "hint":  "kernel pwn ret2usr CTF 内核题",
+                      "expect":  "R17",
+                      "quick":  true
+                  },
+                  {
+                      "hint":  "IDA 反编译 so 静态分析",
+                      "expect":  "R6",
+                      "quick":  true
+                  },
+                  {
+                      "hint":  "vmware 靶机 快照 恶意样本分析环境",
+                      "expect":  "R42",
+                      "quick":  true
+                  },
+                  {
+                      "hint":  "vmrun clone 实验环境编排 批量建机",
+                      "expect":  "R42",
+                      "quick":  false
+                  },
+                  {
+                      "hint":  "esxi vsphere 虚拟机环境管理",
+                      "expect":  "R42",
+                      "quick":  true
+                  },
+                  {
+                      "hint":  "恶意样本 沙箱 yara 检测",
+                      "expect":  "R9",
+                      "quick":  true
                   }
               ]
 }

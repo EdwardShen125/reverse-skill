@@ -31,7 +31,7 @@ for arg in "$@"; do
         --skip-refresh) SKIP_REFRESH=true ;;
         --list|-l)
             echo "jadx apktool jeb-pro frida frida-ps idalib-mcp jshookmcp reqable-mcp anything-analyzer idapro r2 rabin2 adb agent-browser ghidra-mcp seclists proxycat burpsuite-mcp nmap pentestswarm bkcrack"
-            echo "mcp-kali-server metasploitmcp hexstrike-ai adaptixc2 atomic-operator sstimap xsstrike wpprobe fluxion gef coercer evil-winrm-py netexec responder bloodhound certipy"
+            echo "mcp-kali-server metasploitmcp hexstrike-ai adaptixc2 atomic-operator sstimap xsstrike wpprobe fluxion gef coercer evil-winrm-py netexec responder bloodhound certipy windbg-mcp vmware-mcp"
             exit 0
             ;;
         -*) echo "未知选项: $arg"; exit 1 ;;
@@ -57,7 +57,7 @@ if [[ ${#CAPABILITIES[@]} -eq 0 ]]; then
     echo ""
     echo "  [MCP 服务]"
     echo "    jshookmcp reqable-mcp anything-analyzer idapro agent-browser"
-    echo "    mcp-kali-server metasploitmcp hexstrike-ai pentestswarm"
+    echo "    mcp-kali-server metasploitmcp hexstrike-ai pentestswarm windbg-mcp vmware-mcp"
     echo ""
     echo "  [CTF 压缩包]"
     echo "    bkcrack"
@@ -330,6 +330,28 @@ register_mcp_server() {
     else
         log_warn "未安装 jq，无法自动注册 MCP server。请手动编辑 $config_path"
     fi
+}
+
+ensure_lan_mcp() {
+    # Shared path for LAN-hosted MCP capabilities (canAutoInstall=false in manifest):
+    # register URL into client MCP config, probe reachability, never install.
+    local cap="$1" mcp_name="$2" url="$3"
+    register_mcp_server "$mcp_name" "{\"url\": \"$url\"}"
+    if command -v curl &>/dev/null; then
+        if curl -s -o /dev/null --max-time 5 "$url"; then
+            log_ok "$cap service reachable at $url"
+        else
+            log_warn "$cap not reachable at $url; service runs on the LAN lab-host (see manualInstallHint in bootstrap-manifest.json)"
+        fi
+    fi
+}
+
+ensure_windbg_mcp() {
+    ensure_lan_mcp "windbg-mcp" "windbg" "http://192.168.100.175:8765/mcp/"
+}
+
+ensure_vmware_mcp() {
+    ensure_lan_mcp "vmware-mcp" "vmware" "http://192.168.100.175:8766/mcp/"
 }
 
 # 等待端口就绪
@@ -649,6 +671,12 @@ EOF
             log_warn "MANUAL_INSTALL_REQUIRED: burpsuite-mcp"
             log_warn "Kali 预装 BurpSuite，在扩展市场搜索 MCP 插件安装"
             register_mcp_server "burpsuite" "{\"url\": \"http://localhost:9876/mcp\"}"
+            ;;
+        windbg-mcp)
+            ensure_windbg_mcp
+            ;;
+        vmware-mcp)
+            ensure_vmware_mcp
             ;;
 
         *)

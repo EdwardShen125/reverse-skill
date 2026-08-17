@@ -471,7 +471,7 @@ Kali Linux（Bash，含 Kali 原生工具链）：
 bash <本包根目录>/kali/scripts/bootstrap-reverse.sh 工具名 --start-services
 ```
 
-支持的能力名（与 `skills/scripts/bootstrap-manifest.json` 保持一致，共 24 项）：jadx、apktool、jeb-pro、frida、frida-ps、idalib-mcp、reqable-mcp、jshookmcp、anything-analyzer、idapro、r2、rabin2、adb、agent-browser、ghidra-mcp、seclists、proxycat、burpsuite-mcp、nmap、pentestswarm、binwalk、yara、pwntools、bkcrack
+支持的能力名（与 `skills/scripts/bootstrap-manifest.json` 保持一致，共 26 项）：jadx、apktool、jeb-pro、frida、frida-ps、idalib-mcp、reqable-mcp、jshookmcp、anything-analyzer、idapro、r2、rabin2、adb、agent-browser、ghidra-mcp、seclists、proxycat、burpsuite-mcp、nmap、pentestswarm、binwalk、yara、pwntools、bkcrack、windbg-mcp、vmware-mcp
 
 ## 刷新工具索引
 
@@ -529,6 +529,8 @@ bash <本包根目录>/kali/scripts/refresh-tool-index.sh
 - 浏览器自动化、Playwright、agent-browser、桌面自动化
 - N-day、补丁差分、patch diff、CVE 复现、1day
 - 符号迁移、bindiff、跨版本、PDB 缺失
+- WinDbg、内核调试、kernel debug、crash dump、minidump、蓝屏、BSOD、驱动逆向、driver reverse、dump 分析
+- VMware、vSphere、ESXi、vmrun、snapshot、快照、靶机、target VM、虚拟机实验环境、host-only、实验编排
 - API 安全测试、GraphQL 安全、JWT 攻击、供应链安全
 - iOS 逆向、移动安全、MSTG、Objection、SSL Pinning
 - YARA、恶意软件分析、IOC、沙箱

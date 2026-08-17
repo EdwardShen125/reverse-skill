@@ -308,7 +308,7 @@
       "skill": "vmware-lab/SKILL.md",
       "keywords": [
         { "must": "vmware|vsphere|esxi|\\bvmrun\\b|靶机|虚拟机.?环境|host.?only|vm.?编排|实验环境", "note": "VMware 产品名/靶机/实验编排" },
-        { "must": "快照|snapshot", "note": "快照独立成规则：与 R9 恶意样本语境叠加时（如『vmware 靶机 快照 恶意样本』）R42 命中 2 规则以 2:1 压过 R9 单规则，避免 priority 靠后者被 R9 抢走" }
+        { "must": "快照|snapshot", "mustAll": ["靶机|虚拟机|vmware|vsphere|esxi|vmrun|实验|恶意|样本"], "note": "快照需语境限定（mustAll）：与 R9 恶意样本语境叠加时（如『vmware 靶机 快照 恶意样本』）R42 命中 2 规则以 2:1 压过 R9 单规则；裸『快照』（如『Frida hook 快照逻辑』）不命中 R42" }
       ]
     },
     "R0": {

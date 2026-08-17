@@ -176,7 +176,7 @@ Usage:
 Capabilities (parity with bootstrap-reverse.ps1):
   jadx apktool frida frida-ps idalib-mcp jshookmcp reqable-mcp anything-analyzer idapro
   r2 rabin2 adb agent-browser ghidra-mcp seclists proxycat burpsuite-mcp
-  nmap pentestswarm binwalk yara pwntools
+  nmap pentestswarm binwalk yara pwntools windbg-mcp vmware-mcp
 
 Examples:
   bash skills/scripts/bootstrap-reverse.sh jadx apktool frida
@@ -195,7 +195,7 @@ EOF
 ALL_CAPABILITIES=(
   jadx apktool jeb-pro frida frida-ps idalib-mcp jshookmcp reqable-mcp anything-analyzer idapro
   r2 rabin2 adb agent-browser ghidra-mcp seclists proxycat burpsuite-mcp
-  nmap pentestswarm binwalk yara pwntools
+  nmap pentestswarm binwalk yara pwntools windbg-mcp vmware-mcp
 )
 
 if $LIST_ONLY; then
@@ -720,6 +720,28 @@ ensure_idapro() {
   fi
 }
 
+ensure_lan_mcp() {
+  # Shared path for LAN-hosted MCP capabilities (canAutoInstall=false in manifest):
+  # register URL into client MCP config, probe reachability, never install.
+  local cap="$1" mcp_name="$2" url="$3"
+  write_mcp_server "$mcp_name" "{\"url\":\"$url\"}"
+  if command -v curl > /dev/null 2>&1; then
+    if curl -s -o /dev/null --max-time 5 "$url"; then
+      log_ok "$cap service reachable at $url"
+    else
+      log_warn "$cap not reachable at $url; service runs on the LAN lab-host (see manualInstallHint in bootstrap-manifest.json)"
+    fi
+  fi
+}
+
+ensure_windbg_mcp() {
+  ensure_lan_mcp "windbg-mcp" "windbg" "http://192.168.100.175:8765/mcp/"
+}
+
+ensure_vmware_mcp() {
+  ensure_lan_mcp "vmware-mcp" "vmware" "http://192.168.100.175:8766/mcp/"
+}
+
 ensure_r2() {
   if has_cmd r2; then log_ok "r2 ready: $(cmd_path r2)"; return 0; fi
   case "$PLATFORM" in
@@ -944,6 +966,8 @@ ensure_capability() {
     binwalk) ensure_binwalk ;;
     yara) ensure_yara ;;
     pwntools) ensure_pwntools ;;
+    windbg-mcp) ensure_windbg_mcp ;;
+    vmware-mcp) ensure_vmware_mcp ;;
     *) log_err "No bootstrap definition for capability: $name"; return 1 ;;
   esac
 }

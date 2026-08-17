@@ -78,6 +78,8 @@ description: Routes reverse engineering, exploitation, penetration testing, malw
 | **邮件安全** | `email-security/` | 钓鱼拆解、SPF/DKIM/DMARC、BEC |
 | **联邦身份** | `identity-federation/` | SAML/OIDC/OAuth SSO 流与错配 |
 | **RF / SDR** | `radio-sdr/` | 授权射频研究、默认只收 |
+| **WinDbg 调试** | `windbg-reverse/` | 内核/驱动调试、crash dump 分诊、用户态远程调试、NDIS/WFP 网络栈逆向（LAN mcp-windbg） |
+| **VMware 实验室** | `vmware-lab/` | 靶机环境、快照/隔离纪律、实验编排、通用 VM 控制（LAN vmware-mcp）；含内核调试实验室组合场景 |
 
 ## 统一入口
 

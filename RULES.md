@@ -204,6 +204,8 @@ After task completion (vulnerability verified / reverse complete / flag captured
 | jshookmcp | — | JS Hook/CDP/Network/AST | `npx -y @jshookmcp/jshook@0.3.4` (stdio) |
 | ghidra | 8765 | Ghidra free decompiler | Ghidra GUI auto-listens after launch |
 | burpsuite | 9876 | BurpSuite 78-tool full control (Proxy/Intruder/Repeater/Scanner/Collaborator) | Burp extension auto-loads |
+| windbg | 8765 | WinDbg 调试 MCP（kd/cdb 会话制，9 工具） | LAN lab-host 192.168.100.175，bootstrap 注册 URL；服务由内网调试机提供 |
+| vmware | 8766 | VMware 实验室 MCP（REST/vmrun/vmcli 三层，130 工具） | LAN lab-host 192.168.100.175，bootstrap 注册 URL；服务由内网调试机提供 |
 
 ---
 

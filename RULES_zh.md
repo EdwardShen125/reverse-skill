@@ -280,6 +280,8 @@
 | jshookmcp | — | JS Hook/CDP/Network/AST | `npx -y @jshookmcp/jshook@0.3.4`（stdio） |
 | ghidra | 8765 | Ghidra 免费反编译 | Ghidra GUI 启动后自动监听 |
 | burpsuite | 9876 | BurpSuite 78 工具全控制（Proxy/Intruder/Repeater/Scanner/Collaborator） | Burp 启动后扩展自动加载 |
+| windbg | 8765 | WinDbg 调试 MCP（kd/cdb 会话制，9 工具） | 内网 lab-host 192.168.100.175，bootstrap 注册 URL；服务由内网调试机提供 |
+| vmware | 8766 | VMware 实验室 MCP（REST/vmrun/vmcli 三层，130 工具） | 内网 lab-host 192.168.100.175，bootstrap 注册 URL；服务由内网调试机提供 |
 
 使用 MCP 工具前：
 1. 先确认 `tool-index.md` 中该服务的 `MCP 已注册` 状态

@@ -6,15 +6,16 @@
 
 ## 统计
 
-- 真实项目数：18
+- 真实项目数：20
 - 种子参考数：17
-- 总条目数：35
-- 最近更新：2026-08-14
+- 总条目数：37
+- 最近更新：2026-08-20
 
 ## 按场景分类
 
 ### APK / Android 逆向
 
+- [2026-08-20 Flutter AOT 服务端驱动广告去除（Blutter + 等长字符串替换）](./2026-08-20_apk-flutter-banner-ad-removal.md)
 - [2026-05-15-cellular-pro-mumu-ksad-fragment-fix](./2026-05-15-cellular-pro-mumu-ksad-fragment-fix.md)
 - [[种子] seed-008_apk-okhttp-ssl-pin-bypass](./seed-008_apk-okhttp-ssl-pin-bypass.md)
 
@@ -61,6 +62,7 @@
 
 ### 工具链与环境
 
+- [2026-08-17 tool-index r2 fallback 与 powershell/pwsh 子进程入口统一](./2026-08-17_tool-index-r2-fallback-powershell-pwsh-host-fix.md)
 - [2026-08-14 Windows PowerShell 原生命令退出码 PR 审查](./2026-08-14_windows-powershell-native-exit-code-pr-review.md)
 - [2026-08-08 平台无关结构化路由 PR 集成](./2026-08-08_client-neutral-structured-routing-pr-integration.md)
 - [2026-07-20_reverse-toolchain-windows-bootstrap](./2026-07-20_reverse-toolchain-windows-bootstrap.md)
@@ -74,6 +76,7 @@
 
 ### 平台无关路由与供应链门禁
 
+- [Resolve-ReverseHostExe 统一子进程入口、r2 .bat fallback、StrictMode hashtable 安全访问](./2026-08-17_tool-index-r2-fallback-powershell-pwsh-host-fix.md)
 - [原生命令后立即保存退出码、Windows PowerShell 5.1 实宿主复现、PR head 固定](./2026-08-14_windows-powershell-native-exit-code-pr-review.md)
 - [单一 routing.json、多入口 parity、实际安装命令 pin](./2026-08-08_client-neutral-structured-routing-pr-integration.md)
 
@@ -89,6 +92,7 @@
 
 ### Windows PowerShell 供应链引导脚本
 
+- [powershell/pwsh 子进程入口统一、tool-index .bat fallback、pin gate StrictMode](./2026-08-17_tool-index-r2-fallback-powershell-pwsh-host-fix.md)
 - [原生命令输出经过对象管道后退出码失真](./2026-08-14_windows-powershell-native-exit-code-pr-review.md)
 
 ### Cortex-M USB MSC 升级器

@@ -638,6 +638,12 @@ EOF
                 "env": {"JSHOOK_BASE_PROFILE": "search"}
             }'
             ;;
+        xquik-mcp)
+            register_mcp_server "xquik" '{
+                "url": "https://xquik.com/mcp"
+            }'
+            log_info "Xquik remote MCP 已登记。请从 MCP 客户端完成 OAuth。"
+            ;;
         agent-browser)
             if ! command -v node &>/dev/null; then
                 install_apt_package "nodejs"

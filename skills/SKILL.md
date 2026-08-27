@@ -79,7 +79,7 @@ description: Routes reverse engineering, exploitation, penetration testing, malw
 | **联邦身份** | `identity-federation/` | SAML/OIDC/OAuth SSO 流与错配 |
 | **RF / SDR** | `radio-sdr/` | 授权射频研究、默认只收 |
 | **WinDbg 调试** | `windbg-reverse/` | 内核/驱动调试、crash dump 分诊、用户态远程调试、NDIS/WFP 网络栈逆向（LAN mcp-windbg） |
-| **VMware 实验室** | `vmware-lab/` | 靶机环境、快照/隔离纪律、实验编排、通用 VM 控制（LAN vmware-mcp）；含内核调试实验室组合场景 |
+| **PVE 实验室** | `pve-lab/` | Proxmox VE 靶机环境、快照/隔离纪律、实验编排、VM 控制（LAN pve-mcp）；含内核调试实验室组合场景（VM ID 300） |
 
 ## 统一入口
 
@@ -145,7 +145,7 @@ description: Routes reverse engineering, exploitation, penetration testing, malw
 powershell -NoProfile -ExecutionPolicy Bypass -File "<skill-root>\scripts\bootstrap-reverse.ps1" -Capability @('工具名') -StartServices
 ```
 
-支持的能力（以 `scripts/bootstrap-manifest.json` 为准）：jadx、apktool、jeb-pro、frida、frida-ps、idalib-mcp、reqable-mcp、jshookmcp、anything-analyzer、idapro、r2、rabin2、adb、agent-browser、ghidra-mcp、seclists、proxycat、burpsuite-mcp、nmap、pentestswarm、binwalk、yara、pwntools、bkcrack、windbg-mcp、vmware-mcp
+支持的能力（以 `scripts/bootstrap-manifest.json` 为准）：jadx、apktool、jeb-pro、frida、frida-ps、idalib-mcp、reqable-mcp、jshookmcp、anything-analyzer、idapro、r2、rabin2、adb、agent-browser、ghidra-mcp、seclists、proxycat、burpsuite-mcp、nmap、pentestswarm、binwalk、yara、pwntools、bkcrack、windbg-mcp、pve-mcp
 
 > JEB Pro 已登记为**手动许可安装**能力：bootstrap 只输出指引，绝不下载或规避商业许可。Reqable MCP 仅登记固定版本的官方运行时，仍需要用户自行安装 Reqable 桌面客户端。
 >

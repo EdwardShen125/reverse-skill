@@ -26,7 +26,7 @@ description: Use for Windows debugging via the LAN WinDbg MCP (mcp-windbg): kern
 | 静态反编译二进制 | `ida-reverse/` / `ghidra-reverse/` |
 | CTF kernel pwn / ROP | `pwn-chain/` |
 | 恶意样本整体分诊 | `malware-analysis/`（内核态细节转本 skill） |
-| 靶机 / 快照 / 实验环境 | `vmware-lab/`（组合场景见其 kernel-debug-lab） |
+| 靶机 / 快照 / 实验环境 | `pve-lab/`（组合场景见其 kernel-debug-lab） |
 
 ## 工具链（windbg MCP，9 工具，会话制）
 
@@ -69,12 +69,11 @@ srv*C:\symbols*https://msdl.microsoft.com/download/symbols
 ### 2. 内核 / 驱动调试
 
 ```text
-□ 前置：靶机已配内核调试串口/KDNET → 见 ../vmware-lab/references/kernel-debug-lab.md
+□ 前置：靶机已配内核调试串口/KDNET → 见 ../pve-lab/references/kernel-debug-lab.md
 □ 先发现后连接：
-  - 管道名：vmware-lab 的 serial_query 读 backingPathName（实测可探测）
-  - 波特率：宿主侧探测不到（命名管道无 baud 概念）；权威值用 guest 内
-    vmrun_run 跑 `bcdedit /dbgsettings` 读 baudrate，取不到则用惯例 115200
-  - 或读 ../vmware-lab/lab-profile.local.md 缓存，跳过发现步骤
+  - 管道名：PVE 的 vm_config_get 读 serial0 配置（socket 模式）
+  - 波特率：guest 侧 `bcdedit /dbgsettings` 读 baudrate，取不到则用惯例 115200
+  - 或读 ../pve-lab/lab-profile.local.md 缓存，跳过发现步骤
 □ open_kd_session(connection_string="com:pipe,port=\\.\pipe\com_1,baud=115200", symbols_path=<符号路径>)
 □ 调试循环（run_kd_command）：bp 断点 / g 执行 / k 栈 / lm 模块 / !drvobj
 ```
@@ -103,7 +102,7 @@ KDNET 变体：`net:port=50000,key=<key>`；物理串口：`com:port=COM1,baud=1
 1. 继续当前会话深挖（新断点 / 单步 / 内存搜索）
 2. 导出会话命令记录，生成阶段报告（docs-generator）
 3. 交接静态反编译（ida-reverse / ghidra-reverse）交叉验证
-4. 恢复靶机快照到干净态（vmware-lab）
+4. 恢复靶机快照到干净态（pve-lab）
 5. 暂停，我先确认前面的证据
 
 ## 语言行为契约
@@ -121,7 +120,7 @@ KDNET 变体：`net:port=50000,key=<key>`；物理串口：`com:port=COM1,baud=1
 
 **上游**: MASTER R41
 **下游**: `protocol-reverse/`（协议还原）、`docs-generator/`（报告）
-**同级**: `vmware-lab/`（靶机环境）、`malware-analysis/`（样本分诊）
+**同级**: `pve-lab/`（靶机环境）、`malware-analysis/`（样本分诊）
 
 ## 任务完成自检
 

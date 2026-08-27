@@ -40,7 +40,7 @@ skills/tool-index.md
 skills/tool-index.json
 
 # 实验室本地环境值（每台机器不同）
-skills/vmware-lab/lab-profile.local.md
+skills/pve-lab/lab-profile.local.md
 
 # 编译产物
 *.exe

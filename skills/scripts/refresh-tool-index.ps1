@@ -58,7 +58,7 @@ $scriptRefs = @{
     'pwntools' = @('reverse-engineering/SKILL.md', 'reverse-engineering/patterns-ctf*.md')
     'bkcrack' = @('reverse-engineering/crypto-decode-tools.md', '../CTF-Sandbox-Orchestrator/competition-zip-archive/SKILL.md')
     'windbg-mcp' = @('windbg-reverse/SKILL.md')
-    'vmware-mcp' = @('vmware-lab/SKILL.md')
+    'pve-mcp' = @('pve-lab/SKILL.md')
 }
 
 $skillsRoot = Split-Path -Parent $PSScriptRoot
@@ -102,7 +102,7 @@ $markdownContent = ($markdownLines -join [Environment]::NewLine) + [Environment]
 $markdownContent | Set-Content -LiteralPath $OutputMarkdown -Encoding utf8
 
 # --- Capability status view ---
-$capabilityNames = @('jadx', 'apktool', 'jeb-pro', 'frida', 'frida-ps', 'idalib-mcp', 'jshookmcp', 'reqable-mcp', 'anything-analyzer', 'idapro', 'r2', 'rabin2', 'adb', 'agent-browser', 'ghidra-mcp', 'seclists', 'proxycat', 'burpsuite-mcp', 'pentestswarm', 'nmap', 'binwalk', 'yara', 'pwntools', 'bkcrack', 'windbg-mcp', 'vmware-mcp')
+$capabilityNames = @('jadx', 'apktool', 'jeb-pro', 'frida', 'frida-ps', 'idalib-mcp', 'jshookmcp', 'reqable-mcp', 'anything-analyzer', 'idapro', 'r2', 'rabin2', 'adb', 'agent-browser', 'ghidra-mcp', 'seclists', 'proxycat', 'burpsuite-mcp', 'pentestswarm', 'nmap', 'binwalk', 'yara', 'pwntools', 'bkcrack', 'windbg-mcp', 'pve-mcp')
 $capabilityRows = @()
 foreach ($capName in $capabilityNames) {
     $state = Get-ReverseCapabilityState -Name $capName

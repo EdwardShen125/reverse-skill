@@ -867,18 +867,23 @@
                       "quick":  true
                   },
                   {
-                      "hint":  "vmware 靶机 快照 恶意样本分析环境",
-                      "expect":  "R42",
+                      "hint":  "PVE 靶机 快照 恶意样本分析",
+                      "expect":  "R43",
                       "quick":  true
                   },
                   {
-                      "hint":  "vmrun clone 实验环境编排 批量建机",
-                      "expect":  "R42",
+                      "hint":  "proxmox qm 命令 实验环境编排",
+                      "expect":  "R43",
                       "quick":  false
                   },
                   {
-                      "hint":  "esxi vsphere 虚拟机环境管理",
-                      "expect":  "R42",
+                      "hint":  "PVE VM ID 300 调试靶机",
+                      "expect":  "R43",
+                      "quick":  true
+                  },
+                  {
+                      "hint":  "pve-mcp 在 Proxmox 上克隆虚拟机",
+                      "expect":  "R43",
                       "quick":  true
                   },
                   {

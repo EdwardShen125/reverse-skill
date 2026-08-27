@@ -33,4 +33,4 @@
 
 ## 收尾
 
-- `close_kd_session` 释放；靶机快照 revert（../vmware-lab/）
+- `close_kd_session` 释放；靶机快照 revert（../pve-lab/）

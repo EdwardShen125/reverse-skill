@@ -36,8 +36,9 @@
 □ Step 1: vm_list → 发现 VM ID 300
 □ Step 2: vm_config_get(vmid=300, key="serial0") → 确认 socket 模式
 □ Step 3: snapshot_create(vmid=300, name="pre-kd-debug-20260827")
-□ Step 4: vm_start(vmid=300)
-□ Step 5: windbg: open_kd_session(connection_string="com:pipe,port=\\\\.\\pipe\\com_1,baud=115200")
+□ Step 4: windbg: open_kd_session(connection_string="com:port=com1,baud=115200")
+         注：WinDbg 将显示 "Waiting to reconnect..."
+□ Step 5: vm_start(vmid=300) → 启动靶机，WinDbg 自动连接
 □ Step 6: 调试循环 (run_kd_command)
 □ Step 7: windbg: close_kd_session
 □ Step 8: snapshot_revert(vmid=300, snapname="pre-kd-debug-20260827")
@@ -47,7 +48,7 @@
 
 | 方式 | 格式 | 适用场景 |
 |------|------|----------|
-| 命名管道（socat 转接） | `com:pipe,port=\\.\pipe\com_1,baud=115200` | PVE socket → Windows 管道 |
+| COM1 串口（标准） | `com:port=com1,baud=115200` | PVE 环境 COM1 端口 |
 | TCP 直连 | `com:port=<host>:50000,target=kernel` | PVE TCP socket 模式 |
 | KDNET | `net:port=50000,key=<32位key>` | Win8.1+ 内核调试（最快） |
 

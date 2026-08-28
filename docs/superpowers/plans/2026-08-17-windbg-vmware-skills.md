@@ -151,13 +151,13 @@ srv*C:\symbols*https://msdl.microsoft.com/download/symbols
 ### 2. 内核 / 驱动调试
 
 ```text
-□ 前置：靶机已配内核调试串口/KDNET → 见 ../vmware-lab/references/kernel-debug-lab.md
+□ 前置：靶机已配内核调试串口/KDNET → 见 ../pve-lab/references/kernel-debug-lab.md
 □ 先发现后连接：
-  - 管道名：vmware-lab 的 serial_query 读 backingPathName（实测可探测）
-  - 波特率：宿主侧探测不到（命名管道无 baud 概念）；权威值用 guest 内
-    vmrun_run 跑 `bcdedit /dbgsettings` 读 baudrate，取不到则用惯例 115200
-  - 或读 ../vmware-lab/lab-profile.local.md 缓存，跳过发现步骤
-□ open_kd_session(connection_string="com:pipe,port=\\.\pipe\com_1,baud=115200", symbols_path=<符号路径>)
+  - 管道名：PVE 的 vm_config_get 读 serial0 配置（socket 模式）
+  - 波特率：guest 侧 `bcdedit /dbgsettings` 读 baudrate，取不到则用惯例 115200
+  - 或读 ../pve-lab/lab-profile.local.md 缓存，跳过发现步骤
+□ open_kd_session(connection_string="com:port=com1,baud=115200", symbols_path=<符号路径>)
+  注：PVE 环境下 WinDbg 先启动进入等待状态，然后 pve vm_start 启动靶机
 □ 调试循环（run_kd_command）：bp 断点 / g 执行 / k 栈 / lm 模块 / !drvobj
 ```
 
@@ -573,35 +573,33 @@ description: Use for VMware lab infrastructure via the LAN vmware-mcp server: ta
                               靶机 VM 串口（内核调试已启用）
 ```
 
-kd 与 VMware Workstation 跑在同一台 lab-host，串口走命名管道。
+kd 与 PVE 跑在同一台 lab-host，通过 socat 转接串口。
 
 ## 标准流程（先发现、后连接）
 
 ```text
-1. vm_list / vmrun_list            → 找到靶机 VM 名（vm_id / vmx 路径）
-2. serial_query(vm_id)             → 读串口 backingPathName（管道名，实测可探测；
-                                     output 另含 pipeEndPoint=server 等拓扑信息）
-3. 波特率：宿主侧探测不到（命名管道无 baud 概念）
-   - 权威：vmrun_run 在 guest 内跑 `bcdedit /dbgsettings` 读 baudrate
-   - 缺省：惯例 115200（管道传输不受 baud 约束，名义值即可）
-4. （缓存）读 lab-profile.local.md  → 跳过 1-3 加速；缺失不影响
-5. vmrun_snapshot_take             → 拍干净态基线
-6. vmrun_start                     → 拉起靶机（bcdedit /debug 已启用）
-7. windbg: open_kd_session(connection_string="com:pipe,port=\\.\pipe\<step2 管道名>,baud=<step3 波特率>")
+1. vm_list                        → 找到靶机 VM ID（如 300）
+2. vm_config_get(vm_id, "serial0") → 读串口配置（确认 socket 模式）
+3. 波特率：通常 115200（guest 侧 bcdedit 配置）
+4. （缓存）读 lab-profile.local.md → 跳过 1-3 加速；缺失不影响
+5. snapshot_create                 → 拍干净态基线
+6. windbg: open_kd_session(connection_string="com:port=com1,baud=115200")
+   注：PVE 环境下 WinDbg 先启动进入 "Waiting to reconnect..." 状态
+7. vm_start(vm_id=300)            → 启动靶机，WinDbg 自动连接
 8. 调试循环（run_kd_command）
 9. windbg: close_kd_session
-10. vmrun_snapshot_revert           → 恢复干净态
+10. snapshot_revert               → 恢复干净态
 ```
 
 ## connection_string 三种格式（open_kd_session 实测支持）
 
 | 方式 | 格式 | 适用 |
 |------|------|------|
-| 命名管道 | `com:pipe,port=\\.\pipe\com_1,baud=115200` | VMware 串口（默认拓扑） |
+| COM1 串口 | `com:port=com1,baud=115200` | PVE 环境（标准） |
 | KDNET | `net:port=50000,key=<32位key.逐字>` | Win8.1+，快 |
 | 物理串口 | `com:port=COM1,baud=115200` | 实机调试 |
 
-惯例默认值：管道 `com_1`、波特率 `115200`（仅当发现步骤拿不到值时用，且要向用户确认）。
+惯例默认值：端口 `com1`、波特率 `115200`（仅当发现步骤拿不到值时用，且要向用户确认）。
 
 ## lab-profile.local.md 格式（gitignored，各机器自维护）
 

@@ -74,7 +74,9 @@ srv*C:\symbols*https://msdl.microsoft.com/download/symbols
   - 管道名：PVE 的 vm_config_get 读 serial0 配置（socket 模式）
   - 波特率：guest 侧 `bcdedit /dbgsettings` 读 baudrate，取不到则用惯例 115200
   - 或读 ../pve-lab/lab-profile.local.md 缓存，跳过发现步骤
-□ open_kd_session(connection_string="com:pipe,port=\\.\pipe\com_1,baud=115200", symbols_path=<符号路径>)
+□ open_kd_session(connection_string="com:port=com1,baud=115200", symbols_path=<符号路径>)
+   注：PVE 环境下使用 COM1 端口，WinDbg 会显示 "Waiting to reconnect..."
+□ pve: vm_start(vmid=300) → 启动靶机，WinDbg 自动连接
 □ 调试循环（run_kd_command）：bp 断点 / g 执行 / k 栈 / lm 模块 / !drvobj
 ```
 

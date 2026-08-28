@@ -125,9 +125,10 @@ fi
 3. 波特率：通常 115200（guest 侧 bcdedit 配置）
 4. （缓存）读 lab-profile.local.md → 跳过 1-3 加速；缺失不影响
 5. snapshot_create                 → 拍干净态基线
-6. vm_start                        → 拉起靶机（bcdedit /debug 已启用）
-7. windbg: open_kd_session(connection_string="com:pipe,port=\\\\.\\pipe\\com_1,baud=115200")
-   注：假设命名管道基础设施已就绪
+6. windbg: open_kd_session(connection_string="com:port=com1,baud=115200")
+   注：WinDbg 将进入 "Waiting to reconnect..." 状态
+7. vm_start                        → 启动靶机（bcdedit /debug 已启用）
+   注：VM 启动后 WinDbg 自动连接
 8. 调试循环（run_kd_command）
 9. windbg: close_kd_session
 10. snapshot_revert                → 恢复干净态
@@ -174,7 +175,7 @@ com:port=<lab-host>:50000,target=kernel
 
 | 方式 | 格式 | 适用 |
 |------|------|------|
-| 命名管道（标准） | `com:pipe,port=\\.\pipe\com_1,baud=115200` | 使用 COM1 管道（基础设施保证） |
+| COM1 串口（标准） | `com:port=com1,baud=115200` | PVE 环境下使用 COM1 端口 |
 | TCP 直连 | `com:port=<host>:50000,target=kernel` | PVE TCP socket 模式 |
 | KDNET | `net:port=50000,key=<32位key>` | Win8.1+，最快 |
 

@@ -88,15 +88,19 @@ skill 正文是随仓库分发的方法论，`MUST NOT` 写死单机环境值：
 ### 内核调试组合场景（两 skill 桥接）
 
 ```
-vmware-lab: vmrun_snapshot_take（拍照）→ vmrun_start（拉起靶机）
-    ↓ vm_list / serial_query 自动发现管道名与波特率（或读 lab-profile.local.md）
-windbg-reverse: open_kd_session(connection_string="com:pipe,port=\\.\pipe\<发现值>,baud=<发现值>")
+pve-lab: snapshot_create（拍照）→ 启动顺序注意（见下文）
+    ↓ vm_list / vm_config_get 自动发现 VM ID 与波特率（或读 lab-profile.local.md）
+windbg-reverse: open_kd_session(connection_string="com:port=com1,baud=115200")
+    ↓ WinDbg 显示 "Waiting to reconnect..." 状态
+pve-lab: vm_start(vmid=300) → 启动靶机，WinDbg 自动连接
     ↓ 调试循环：bp 断点 / g 执行 / !analyze
     ↓ 结束
-windbg-reverse: close_kd_session → vmware-lab: vmrun_snapshot_revert（恢复干净态）
+windbg-reverse: close_kd_session → pve-lab: snapshot_revert（恢复干净态）
 ```
 
-`open_kd_session.connection_string` 三种支持格式（实测）：KDNET `net:port=50000,key=...`、命名管道 `com:pipe,port=\\.\pipe\com_1,baud=115200`、物理串口 `com:port=COM1,baud=115200`。
+`open_kd_session.connection_string` 三种支持格式（实测）：KDNET `net:port=50000,key=...`、COM1 串口 `com:port=com1,baud=115200`（PVE 环境）、物理串口 `com:port=COM1,baud=115200`。
+
+**重要**：PVE 环境下启动顺序必须为：WinDbg 先启动并进入等待状态 → 然后启动 PVE VM，WinDbg 才能自动连接。
 
 两个 SKILL.md 均含（CONTRIBUTING.md 3.1-3.4 硬性块）：
 

@@ -17,7 +17,7 @@
 | Server | 版本 | URL | 响应格式 |
 |---|---|---|---|
 | mcp-windbg | 1.29.0 | `http://192.168.100.175:8765/mcp/` | JSON (uvicorn) |
-| vmware-mcp | 1.29.0 | `http://192.168.100.175:8766/mcp/` | SSE (uvicorn) |
+| pve-mcp | 1.29.0 | `http://192.168.100.175:8767/mcp/` | SSE (uvicorn) |
 
 ## 2. 两个 skill 的定位与边界
 
@@ -159,7 +159,7 @@ vmware|vsphere|esxi|vmrun|快照|snapshot|靶机|虚拟机.?环境|host.?only|vm
 }
 ```
 
-vmware-mcp 同构（8766 端口，mcpNames ["vmware"]）。
+pve-mcp 同构（8767 端口，mcpNames ["pve"]）。
 
 - `canAutoInstall: false`：bootstrap 不安装服务，只注册 URL 到本机客户端 mcp.json + 端口探测
 - 地址含内网 IP：本仓库为用户私有二开用途，可接受；若将来公开需换占位符（用户已知悉）

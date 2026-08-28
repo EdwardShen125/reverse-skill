@@ -183,7 +183,7 @@ Usage:
 Capabilities (parity with bootstrap-reverse.ps1):
   jadx apktool frida frida-ps idalib-mcp jshookmcp reqable-mcp xquik-mcp anything-analyzer idapro
   r2 rabin2 adb agent-browser ghidra-mcp seclists proxycat burpsuite-mcp
-  nmap pentestswarm binwalk yara pwntools windbg-mcp vmware-mcp
+  nmap pentestswarm binwalk yara pwntools windbg-mcp pve-mcp
 
 Examples:
   bash skills/scripts/bootstrap-reverse.sh jadx apktool frida
@@ -204,7 +204,7 @@ EOF
 ALL_CAPABILITIES=(
   jadx apktool jeb-pro frida frida-ps idalib-mcp jshookmcp reqable-mcp xquik-mcp anything-analyzer idapro
   r2 rabin2 adb agent-browser ghidra-mcp seclists proxycat burpsuite-mcp
-  nmap pentestswarm binwalk yara pwntools windbg-mcp vmware-mcp
+  nmap pentestswarm binwalk yara pwntools windbg-mcp pve-mcp
 )
 
 if $LIST_ONLY; then
@@ -836,10 +836,6 @@ ensure_windbg_mcp() {
   ensure_lan_mcp "windbg-mcp" "windbg" "http://192.168.100.175:8765/mcp/"
 }
 
-ensure_vmware_mcp() {
-  ensure_lan_mcp "vmware-mcp" "vmware" "http://192.168.100.175:8766/mcp/"
-}
-
 ensure_r2() {
   if has_cmd r2; then log_ok "r2 ready: $(cmd_path r2)"; return 0; fi
   case "$PLATFORM" in
@@ -1066,7 +1062,6 @@ ensure_capability() {
     yara) ensure_yara ;;
     pwntools) ensure_pwntools ;;
     windbg-mcp) ensure_windbg_mcp ;;
-    vmware-mcp) ensure_vmware_mcp ;;
     *) log_err "No bootstrap definition for capability: $name"; return 1 ;;
   esac
 }

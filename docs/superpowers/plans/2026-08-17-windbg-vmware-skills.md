@@ -621,7 +621,7 @@ bcdedit /dbgsettings serial debugport:1 baudrate:115200   # 串口方式
 # 或 KDNET：bcdedit /dbgsettings net hostkey:<key>（记下 key/port）
 ```
 
-VMware 侧：VM 设置 → 串口 → 输出到命名管道 `\\.\pipe\com_1`，"该端是服务器，另一端是应用程序"。
+PVE 侧：VM Hardware → Serial Port (Serial0) → Mode: Socket
 ```
 
 - [ ] **Step 3.5: .gitignore 加条目**
@@ -630,7 +630,7 @@ VMware 侧：VM 设置 → 串口 → 输出到命名管道 `\\.\pipe\com_1`，"
 
 ```gitignore
 # 实验室本地环境值（每台机器不同）
-skills/vmware-lab/lab-profile.local.md
+skills/pve-lab/lab-profile.local.md
 ```
 
 - [ ] **Step 3.6: Commit**
@@ -934,7 +934,7 @@ Expected: 两处均返回 `serverInfo`（mcp-windbg / vmware-mcp v1.29.0）。
 
 ```bash
 git status
-git add -A ':!skills/tool-index.md' ':!skills/tool-index.json' ':!skills/vmware-lab/lab-profile.local.md'
+git add -A ':!skills/tool-index.md' ':!skills/tool-index.json' ':!skills/pve-lab/lab-profile.local.md'
 git commit -m "chore: final verification pass for windbg/vmware skills" || echo "nothing to commit"
 ```
 

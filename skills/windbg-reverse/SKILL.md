@@ -35,7 +35,7 @@ description: Use for Windows debugging via the LAN WinDbg MCP (mcp-windbg): kern
 | `list_dumps` | 列出 dump 文件（默认注册表 dump 目录） |
 | `open_cdb_dump` | 打开用户态 dump 并自动 `!analyze -v` |
 | `open_cdb_remote` | 连接用户态远程调试服务（cdb -server） |
-| `open_kd_session` | 连接内核目标（KDNET / 命名管道 / COM） |
+| `open_kd_session` | 连接内核目标（KDNET / COM1 串口 / TCP socket） |
 | `run_cdb_command` / `run_kd_command` | 在会话中执行调试命令 |
 | `close_cdb_session` / `close_kd_session` | 关闭会话释放资源 |
 | `send_ctrl_break` | 打断运行中的活动会话 |

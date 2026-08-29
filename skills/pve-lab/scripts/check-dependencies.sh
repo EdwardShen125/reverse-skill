@@ -121,14 +121,8 @@ else
 fi
 echo ""
 
-# 6. 检查命名管道（Windows 侧需要手动检查）
-check_info "6. 命名管道状态"
-check_warn "需要手动检查 Windows 侧命名管道"
-check_info "   PowerShell: Test-Path "\\.\\pipe\\com_1""
-check_info "   预期: True"
-
-# 7. 检查 QEMU Agent（guest 内操作需要）
-check_info "7. QEMU Agent (guest 内操作需要)"
+# 6. 检查 QEMU Agent（guest 内操作需要）
+check_info "6. QEMU Agent (guest 内操作需要)"
 if command -v qm &> /dev/null; then
     QEMU_AGENT=$(qm config "$VM_ID" 2>/dev/null | grep -E "^agent:" || echo "")
     if [ -n "$QEMU_AGENT" ]; then

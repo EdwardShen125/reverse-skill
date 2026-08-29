@@ -13,8 +13,6 @@ VM 状态正常？→ 否 → 检查电源、锁文件、磁盘空间
   ↓ 是
 串口配置正确？→ 否 → 修正 serial0 配置
   ↓ 是
-命名管道可访问？→ 否 → 检查管道基础设施
-  ↓ 是
 WinDbg MCP 在线？→ 否 → 重启 WinDbg MCP 服务
   ↓ 是
 网络隔离配置正确？→ 否 → 调整网桥配置
@@ -28,7 +26,7 @@ WinDbg MCP 在线？→ 否 → 重启 WinDbg MCP 服务
 |------|----------|----------|--------|
 | MCP 调用超时 | 服务停止、网络不通 | curl 探测 | A.1 |
 | VM 启动失败 | 资源不足、锁文件 | qm status、df -h | A.2 |
-| WinDbg 连接超时 | 管道不可用、连接问题 | Test-Path pipe | A.3 |
+| WinDbg 连接超时 | MCP 服务不可用、连接配置错误 | curl 探测、检查连接串 | A.3 |
 | 快照操作失败 | 磁盘满、QEMU Agent | df -h、qm config | A.4 |
 | 调试响应缓慢 | 资源争用、网络延迟 | top、ping | A.5 |
 | 会话残留异常 | 清理不完整 | pgrep kd、qm status | A.6 |
@@ -155,7 +153,7 @@ qm config "$VMID" > /tmp/vm-$VMID.conf
 
 **症状**：
 - `open_kd_session` 超时或返回 "连接失败"
-- WinDbg 无法打开命名管道
+- WinDbg 连接串配置错误
 
 **诊断步骤**：
 
@@ -164,27 +162,11 @@ qm config "$VMID" > /tmp/vm-$VMID.conf
 qm config "$VMID" | grep serial0
 # 预期输出: serial0: socket
 
-# 验证命名管道（PowerShell，在 lab-host 上执行）
-
-# 验证命名管道（PowerShell，在 lab-host 上执行）
-Test-Path "\\.\\pipe\\com_1"
-# 预期: True
-
-[System.IO.Directory]::GetFiles('\\\\.\\pipe\\') | Where-Object { $_ -like "*com_1" }
-# 预期: \\.\pipe\com_1
-
-# 5. 测试管道连接（PowerShell）
-$pipe = New-Object System.IO.Pipes.NamedPipeClientStream("\\.\\pipe\\com_1")
-try {
-    $pipe.Connect(5000)  # 5秒超时
-    Write-Host "管道连接成功"
-    $pipe.Close()
-} catch {
-    Write-Host "管道连接失败: $_"
-}
-
-# 6. 验证 WinDbg MCP 服务
+# 2. 验证 WinDbg MCP 服务
 curl -s http://<lab-host>:8765/mcp/ | head -1
+
+# 3. 检查连接串格式（参考 pve-lab/SKILL.md 的 KD transport 段）
+# PVE 实验室权威传输: com:port=COM1,baud=115200
 ```
 
 **解决方案**：
@@ -194,9 +176,9 @@ curl -s http://<lab-host>:8765/mcp/ | head -1
 qm set "$VMID" -serial0 socket
 qm config "$VMID" | grep serial0
 
-# 方案2: 使用 TCP 模式替代命名管道
-qm set "$VMID" -serial0 socket,server,nowait,port=50000
-# WinDbg 连接字符串改为: com:port=<lab-host>:50000,target=kernel
+# 方案2: 使用正确的连接串（参考 pve-lab/SKILL.md）
+# PVE: com:port=COM1,baud=115200
+# KDNET: net:port=50000,key=<key>
 
 # 方案3: 检查 WinDbg MCP 日志
 # 在 lab-host 上查看 WinDbg MCP 日志文件
@@ -612,7 +594,6 @@ tar czf pve-debug-$(date +%Y%m%d-%H%M%S).tar.gz $(basename $PWD)
 |------|------|
 | 检查 VM 状态 | `qm status "$VMID"` |
 | 查看串口配置 | `qm config "$VMID" \| grep serial0` |
-| 测试命名管道 | `Test-Path "\\\.\\pipe\\com_1"` |
 | 测试 MCP 服务 | `curl http://<lab-host>:8767/mcp/` |
 | 执行依赖检查 | `bash skills/pve-lab/scripts/check-dependencies.sh $VMID` |
 | 执行会话清理 | `bash skills/pve-lab/scripts/cleanup-session.sh $VMID` |

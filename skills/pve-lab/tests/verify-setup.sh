@@ -40,17 +40,7 @@ else
 fi
 
 echo ""
-echo "2. Socat 转接检查"
-if pgrep -f "socat.*300.*serial0" > /dev/null; then
-    check_pass "Socat 转接进程运行中"
-    ps aux | grep -E "socat.*300" | grep -v grep | head -1
-else
-    check_fail "Socat 转接进程未运行"
-    echo "   启动命令: socat UNIX-CONNECT:/var/run/qemu-server/300.serial0 PIPE:\\.\pipe\com_1"
-fi
-
-echo ""
-echo "3. PVE VM 300 配置检查"
+echo "2. PVE VM 300 配置检查"
 if command -v qm &> /dev/null; then
     VM_STATUS=$(qm status 300 2>/dev/null | awk '/status:/ {print $2}')
     if [ -n "$VM_STATUS" ]; then
@@ -70,12 +60,7 @@ else
 fi
 
 echo ""
-echo "4. 管道检查（Windows 侧需手动检查）"
-echo "   在 Windows PowerShell 中运行:"
-echo "   [System.IO.Directory]::GetFiles('\\\\.\\pipe\\') | Where-Object { $_ -like '*com_1' }"
-
-echo ""
-echo "5. AI 客户端配置检查"
+echo "3. AI 客户端配置检查"
 if [ -f ~/.claude/mcp.json ]; then
     if grep -q "pve" ~/.claude/mcp.json 2>/dev/null; then
         check_pass "pve-mcp 已在 Claude MCP 配置中注册"
@@ -92,12 +77,12 @@ else
 fi
 
 echo ""
-echo "6. 测试 PVE MCP 基础调用"
+echo "4. 测试 PVE MCP 基础调用"
 echo "   测试命令: curl -X POST http://192.168.100.175:8767/mcp/ -H 'Content-Type: application/json' -H 'Accept: text/event-stream' -d '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/list\",\"params\":{}}'"
 echo "   （需要 SSE 客户端或 AI 框架调用）"
 
 echo ""
-echo "7. 建议测试提示词"
+echo "5. 建议测试提示词"
 echo "   测试 1: \"PVE VM ID 300 创建快照 pre-kd-test\""
 echo "   测试 2: \"用 windbg 连接 PVE VM 300 内核调试\""
 echo "   测试 3: \"PVE 靶机快照后调试驱动 BSOD\""

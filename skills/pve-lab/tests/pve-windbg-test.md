@@ -57,21 +57,13 @@
 ### 在 Lab Host (192.168.100.175) 上执行
 
 ```bash
-# 1. 检查 socat 转接状态
-ps aux | grep socat
-# 预期: socat UNIX-CONNECT:/var/run/qemu-server/300.serial0 PIPE:\\.\pipe\com_1
-
-# 2. 检查 PVE VM 串口配置
+# 1. 检查 PVE VM 串口配置
 qm config 300 | grep serial
 # 预期: serial0: socket
 
-# 3. 检查 VM 状态
+# 2. 检查 VM 状态
 qm status 300
 # 预期: status: running 或 stopped
-
-# 4. 检查命名管道（Windows 侧）
-# powershell: [System.IO.Directory]::GetFiles("\\.\pipe\")
-# 预期: 包含 com_1 管道
 ```
 
 ### AI 客户端测试
@@ -126,8 +118,7 @@ qm status 300
 ## 已知限制
 
 1. PVE MCP 使用 SSE 传输，无法通过普通 HTTP 探测获取工具列表
-2. macOS 客户端无法直接测试 Windows 命名管道 `\\.\pipe\com_1`
-3. 实际工具调用需要在 Windows lab-host 或 AI 客户端环境测试
+2. 实际工具调用需要在 Windows lab-host 或 AI 客户端环境测试
 
 ## 结论
 

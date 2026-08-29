@@ -115,14 +115,8 @@ else
 fi
 echo ""
 
-# 3. 清理可能的命名管道残留（仅在 lab-host 上有效）
-check_info "3. 清理命名管道残留"
-check_warn "命名管道清理需要在 Windows lab-host 上手动执行"
-check_info "   PowerShell: Remove-Item \"\\\\.\\pipe\\com_1\" -ErrorAction SilentlyContinue"
-echo ""
-
-# 4. 清理临时快照（可选，需要用户确认）
-check_info "4. 临时快照清理"
+# 3. 清理临时快照（可选，需要用户确认）
+check_info "3. 临时快照清理"
 if command -v qm &> /dev/null; then
     TEMP_SNAPSHOTS=$(qm listsnapshot "$VM_ID" 2>/dev/null | grep -E "pre-kd-debug|temp-debug" || "")
     if [ -n "$TEMP_SNAPSHOTS" ]; then

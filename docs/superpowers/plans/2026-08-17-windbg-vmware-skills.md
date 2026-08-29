@@ -563,21 +563,22 @@ description: Use for VMware lab infrastructure via the LAN vmware-mcp server: ta
 - [ ] **Step 3.4: 写 references/kernel-debug-lab.md**
 
 ```markdown
-# 内核调试实验室拓扑（vmware-lab × windbg-reverse）
+# 内核调试实验室拓扑（pve-lab × windbg-reverse）
 
 ## 拓扑
 
 ```text
 分析机（AI 客户端）
-  ├─ MCP: vmware-mcp  http://<lab-host>:8766/mcp/   ← 控制靶机
-  └─ MCP: mcp-windbg  http://<lab-host>:8765/mcp/   ← 在 lab-host 上跑 kd.exe
+  ├─ MCP: pve-mcp     http://<lab-host>:8767/mcp/   ← 控制 PVE 靶机
+  └─ MCP: mcp-windbg  http://<lab-host>:8765/mcp/   ← WinDbg 调试服务
                                       │
-                              命名管道 \\.\pipe\<pipe>
+                              QEMU 串口 Socket
+                              /var/run/qemu-server/<vmid>.serial0
                                       │
                               靶机 VM 串口（内核调试已启用）
 ```
 
-kd 与 PVE 跑在同一台 lab-host，通过 socat 转接串口。
+WinDbg 通过物理串口 COM1 连接到靶机内核调试接口。
 
 ## 标准流程（先发现、后连接）
 

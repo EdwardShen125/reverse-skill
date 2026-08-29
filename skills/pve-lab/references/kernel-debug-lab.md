@@ -73,17 +73,7 @@ fi
 echo "串口配置正确: $SERIAL_CFG"
 ```
 
-### 4. 命名管道验证（Windows 侧）
-
-```powershell
-# 验证命名管道可用性
-Test-Path "\\.\\pipe\\com_1"
-# 预期输出: True
-```
-
-**失败处理**：如管道不可用，联系管理员检查基础设施配置。
-
-### 5. 快照冲突检测
+### 4. 快照冲突检测
 
 ```bash
 # 检查是否存在可能冲突的快照
@@ -95,7 +85,7 @@ if [ -n "$SNAPSHOTS" ]; then
 fi
 ```
 
-### 6. 网络隔离验证（恶意样本分析时重要）
+### 5. 网络隔离验证（恶意样本分析时重要）
 
 ```bash
 # 验证网卡配置是否使用隔离桥接
@@ -111,7 +101,7 @@ if [ -n "$FIRST_NIC" ]; then
 fi
 ```
 
-### 7. 综合预检脚本
+### 6. 综合预检脚本
 
 使用 `skills/pve-lab/scripts/check-dependencies.sh <vmid>` 执行全部检查。
 
@@ -145,30 +135,6 @@ VM Hardware → Serial Port → Serial0 → Socket mode
 
 # 方法2：通过 CLI/API
 qm set <vmid> -serial0 socket
-```
-
-### 命名管道连接（WinDbg 需要）
-
-WinDbg 通过命名管道连接到靶机串口。
-
-**前置条件**（用户保证）：
-- 命名管道 `\\.\pipe\com_1` 已可用
-- 管道已正确连接到 PVE VM 串口
-
-**可用性验证**：
-```powershell
-# Windows PowerShell 验证
-Test-Path "\\.\\pipe\\com_1"
-# 预期输出: True
-```
-
-**替代方案**：使用 TCP socket 模式（无需命名管道）
-```bash
-# PVE 侧配置（TCP socket）
-qm set <vmid> -serial0 socket,server,nowait,port=50000
-
-# WinDbg 连接字符串
-com:port=<lab-host>:50000,target=kernel
 ```
 
 ### 传输格式（以 pve-lab/SKILL.md 的 KD transport 段为准）
@@ -260,23 +226,7 @@ done
 
 ## 故障恢复流程（常见失败场景）
 
-### 场景1: 命名管道不可用
-
-**症状**：WinDbg 连接超时，无法打开命名管道
-
-**诊断**：
-```powershell
-# 验证命名管道可用性
-Test-Path "\\.\\pipe\\com_1"
-# 预期: True
-
-# 列出调试相关管道
-[System.IO.Directory]::GetFiles('\\\\.\\pipe\\') | Where-Object { $_ -like "*com_1" }
-```
-
-**处理**：如管道不可用，联系管理员检查基础设施配置。
-
-### 场景2: VM 启动超时
+### 场景1: VM 启动超时
 
 **症状**：vm_start 调用超时，VM 状态一直是 "starting"
 
@@ -311,7 +261,7 @@ sleep 10
 qm status "$VMID" | grep "running"
 ```
 
-### 场景3: WinDbg 连接失败
+### 场景2: WinDbg 连接失败
 
 **症状**：open_kd_session 超时或返回连接错误
 
@@ -320,10 +270,7 @@ qm status "$VMID" | grep "running"
 # 1. 验证串口配置
 qm config "$VMID" | grep serial0
 
-# 2. 验证命名管道（PowerShell）
-Test-Path "\\.\\pipe\\com_1"
-
-# 3. 验证 WinDbg MCP 服务
+# 2. 验证 WinDbg MCP 服务
 curl -s "http://<lab-host>:8765/mcp/"
 ```
 
@@ -332,15 +279,12 @@ curl -s "http://<lab-host>:8765/mcp/"
 # 1. 确保 VM 已启动并进入调试模式
 qm status "$VMID" | grep running
 
-# 2. 验证命名管道可用
-# PowerShell: Test-Path "\\.\\pipe\\com_1"
-
-# 3. 在 WinDbg MCP 上尝试重新打开会话
+# 2. 在 WinDbg MCP 上尝试重新打开会话
 # windbg: close_kd_session()  # 先关闭可能存在的僵尸会话
 # windbg: open_kd_session(connection_string="...")
 ```
 
-### 场景4: 快照操作失败
+### 场景3: 快照操作失败
 
 **症状**：snapshot_create 或 snapshot_revert 超时
 
@@ -372,7 +316,7 @@ qm snapshot "$VMID" "pre-kd-debug-$(date +%Y%m%d-%H%M%S)"
 qm listsnapshot "$VMID" | grep "pre-kd-debug"
 ```
 
-### 场景5: MCP 服务无响应
+### 场景4: MCP 服务无响应
 
 **症状**：MCP 调用超时或返回 5xx 错误
 

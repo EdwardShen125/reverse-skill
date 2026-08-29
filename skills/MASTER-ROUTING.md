@@ -86,6 +86,7 @@ python3 skills/case-review/scripts/review_case.py work/<case> --verify-hashes --
 | **R31** | macOS / Mach-O | `macos-reverse/` |
 | **R33** | Go / Rust 二进制 | `go-rust-reverse/` |
 | **R5** | .NET / dnSpy / de4dot / ConfuserEx | `dotnet-reverse/` |
+| **R43** | PVE / Proxmox / qm 命令 / VM ID | `pve-lab/` |
 | **R9** | 恶意样本 / YARA / 沙箱 | `malware-analysis/` |
 | **R21** | 协议 / Protobuf / PCAP 协议 | `protocol-reverse/` |
 | **R22** | Ghidra / 开源反编译 | `ghidra-reverse/` |
@@ -139,7 +140,6 @@ python3 skills/case-review/scripts/review_case.py work/<case> --verify-hashes --
 | **R37** | 联邦身份 SAML/OIDC | `identity-federation/` |
 | **R38** | RF / SDR 研究 | `radio-sdr/` |
 | **R41** | WinDbg / kd / cdb / 蓝屏 / dump | `windbg-reverse/` |
-| **R43** | PVE / Proxmox / qm 命令 / VM ID | `pve-lab/` |
 | **R0** | 通用逆向 / 反调试 / OLLVM / 未知二进制 | `reverse-engineering/` |
 
 未命中强关键词 → PRIMARY=`R0`，并提示打开 `routing.md`（歧义附录，不是第二套路由器）。

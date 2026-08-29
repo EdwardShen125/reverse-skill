@@ -9,7 +9,7 @@ description: Use for Windows debugging via the LAN WinDbg MCP (mcp-windbg): kern
 
 1. `NOW`: 读取 `../field-journal/precedent-reverse.md`
 2. `NOW`: 确认任务命中四场景之一（内核/驱动调试、crash dump 分诊、用户态远程调试、网络栈逆向）
-3. `NEXT`: 读 `../tool-index.md` 确认 windbg-mcp 能力在线（servicePort 8765）；未注册 → bootstrap 能力名 `windbg-mcp`
+3. `NEXT`: 读 `../tool-index.md`（存在时）；不存在则直接验证 windbg MCP 会话与 open_kd_session 工具可用
 4. `ACT`: 按工作流打开会话执行；结束 `MUST` 关闭会话
 
 ## 适用场景
@@ -69,18 +69,24 @@ srv*C:\symbols*https://msdl.microsoft.com/download/symbols
 ### 2. 内核 / 驱动调试
 
 ```text
-□ 前置：靶机已配内核调试串口/KDNET → 见 ../pve-lab/references/kernel-debug-lab.md
-□ 先发现后连接：
-  - 管道名：PVE 的 vm_config_get 读 serial0 配置（socket 模式）
-  - 波特率：guest 侧 `bcdedit /dbgsettings` 读 baudrate，取不到则用惯例 115200
-  - 或读 ../pve-lab/lab-profile.local.md 缓存，跳过发现步骤
-□ open_kd_session(connection_string="com:port=com1,baud=115200", symbols_path=<符号路径>)
-   注：PVE 环境下使用 COM1 端口，WinDbg 会显示 "Waiting to reconnect..."
-□ pve: vm_start(vmid=300) → 启动靶机，WinDbg 自动连接
+□ 前置：靶机已配内核调试串口/KDNET
+□ 传输选择（MUST）：从目标实验室 skill 读取权威传输串
+  - PVE 靶机 → 读 `../pve-lab/SKILL.md` 的 KD transport 段
+  - 禁止默认命名管道；禁止从历史证据文件复制连接串
+□ 串口传输的强制顺序（MUST，KDNET 豁免）：
+  1. 通路预检：先确认宿主调试口与靶机 serial 之间有字节流动，
+     以区分"物理通路断"与"目标未开 KD"——两者都表现为 no_debuggee 超时
+  2. listener-first：先 `open_kd_session` 挂上监听，再启动/重启靶机。
+     串口 KD 目标在引导早期开始传输，调试器晚于引导会错过初始握手
+  3. KDNET 不要求 listener-first，运行中目标可直接 attach
+□ open_kd_session(connection_string=<实验室权威传输>, symbols_path=<符号路径>)
 □ 调试循环（run_kd_command）：bp 断点 / g 执行 / k 栈 / lm 模块 / !drvobj
+□ attach 连续 2 次失败 → 停止，产出 typed environment blocker，
+   记录：精确传输错误、连接串、尝试时目标的 uptime、顺序是否 listener-first
 ```
 
-KDNET 变体：`net:port=50000,key=<key>`；物理串口：`com:port=COM1,baud=115200`。
+传输变体：物理串口 `com:port=COM1,baud=115200`；KDNET `net:port=50000,key=<key>`。
+命名管道 `com:pipe,...` 仅限仍使用命名管道桥的环境；以实验室 skill 声明为准。
 
 ### 3. 用户态远程调试
 

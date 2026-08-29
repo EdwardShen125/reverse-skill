@@ -151,17 +151,21 @@ srv*C:\symbols*https://msdl.microsoft.com/download/symbols
 ### 2. 内核 / 驱动调试
 
 ```text
-□ 前置：靶机已配内核调试串口/KDNET → 见 ../pve-lab/references/kernel-debug-lab.md
-□ 先发现后连接：
-  - 管道名：PVE 的 vm_config_get 读 serial0 配置（socket 模式）
-  - 波特率：guest 侧 `bcdedit /dbgsettings` 读 baudrate，取不到则用惯例 115200
-  - 或读 ../pve-lab/lab-profile.local.md 缓存，跳过发现步骤
-□ open_kd_session(connection_string="com:port=com1,baud=115200", symbols_path=<符号路径>)
-  注：PVE 环境下 WinDbg 先启动进入等待状态，然后 pve vm_start 启动靶机
+□ 前置：靶机已配内核调试串口/KDNET
+□ 传输选择（MUST）：从目标实验室 skill 读取权威传输串
+  - PVE 靶机 → 读 `../pve-lab/SKILL.md` 的 KD transport 段
+  - 禁止默认命名管道；禁止从历史证据文件复制连接串
+□ 串口传输的强制顺序（MUST，KDNET 豁免）：
+  1. 通路预检：先确认宿主调试口与靶机 serial 之间有字节流动
+  2. listener-first：先 `open_kd_session` 挂上监听，再启动/重启靶机
+  3. KDNET 不要求 listener-first，运行中目标可直接 attach
+□ open_kd_session(connection_string=<实验室权威传输>, symbols_path=<符号路径>)
 □ 调试循环（run_kd_command）：bp 断点 / g 执行 / k 栈 / lm 模块 / !drvobj
+□ attach 连续 2 次失败 → 停止，产出 typed environment blocker
 ```
 
-KDNET 变体：`net:port=50000,key=<key>`；物理串口：`com:port=COM1,baud=115200`。
+传输变体：物理串口 `com:port=COM1,baud=115200`；KDNET `net:port=50000,key=<key>`。
+命名管道 `com:pipe,...` 仅限仍使用命名管道桥的环境；以实验室 skill 声明为准。
 
 ### 3. 用户态远程调试
 
@@ -583,7 +587,7 @@ kd 与 PVE 跑在同一台 lab-host，通过 socat 转接串口。
 3. 波特率：通常 115200（guest 侧 bcdedit 配置）
 4. （缓存）读 lab-profile.local.md → 跳过 1-3 加速；缺失不影响
 5. snapshot_create                 → 拍干净态基线
-6. windbg: open_kd_session(connection_string="com:port=com1,baud=115200")
+6. windbg: 从 pve-lab/SKILL.md 读取权威传输 → open_kd_session
    注：PVE 环境下 WinDbg 先启动进入 "Waiting to reconnect..." 状态
 7. vm_start(vm_id=300)            → 启动靶机，WinDbg 自动连接
 8. 调试循环（run_kd_command）
@@ -591,13 +595,13 @@ kd 与 PVE 跑在同一台 lab-host，通过 socat 转接串口。
 10. snapshot_revert               → 恢复干净态
 ```
 
-## connection_string 三种格式（open_kd_session 实测支持）
+## 传输格式（以实验室 skill 声明为准）
 
-| 方式 | 格式 | 适用 |
-|------|------|------|
-| COM1 串口 | `com:port=com1,baud=115200` | PVE 环境（标准） |
-| KDNET | `net:port=50000,key=<32位key.逐字>` | Win8.1+，快 |
-| 物理串口 | `com:port=COM1,baud=115200` | 实机调试 |
+**PVE 实验室权威传输**（见 pve-lab/SKILL.md 的 KD transport 段）：
+- 物理串口 COM1：`com:port=COM1,baud=115200`（PVE VM 300）
+- KDNET：`net:port=50000,key=<key>`
+
+命名管道 `com:pipe,...` 仅限仍使用命名管道桥的环境；PVE 拓扑中不存在命名管道。
 
 惯例默认值：端口 `com1`、波特率 `115200`（仅当发现步骤拿不到值时用，且要向用户确认）。
 

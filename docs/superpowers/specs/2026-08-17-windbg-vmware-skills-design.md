@@ -90,7 +90,7 @@ skill 正文是随仓库分发的方法论，`MUST NOT` 写死单机环境值：
 ```
 pve-lab: snapshot_create（拍照）→ 启动顺序注意（见下文）
     ↓ vm_list / vm_config_get 自动发现 VM ID 与波特率（或读 lab-profile.local.md）
-windbg-reverse: open_kd_session(connection_string="com:port=com1,baud=115200")
+windbg-reverse: 从 pve-lab/SKILL.md 读取权威传输段 → open_kd_session
     ↓ WinDbg 显示 "Waiting to reconnect..." 状态
 pve-lab: vm_start(vmid=300) → 启动靶机，WinDbg 自动连接
     ↓ 调试循环：bp 断点 / g 执行 / !analyze
@@ -98,7 +98,10 @@ pve-lab: vm_start(vmid=300) → 启动靶机，WinDbg 自动连接
 windbg-reverse: close_kd_session → pve-lab: snapshot_revert（恢复干净态）
 ```
 
-`open_kd_session.connection_string` 三种支持格式（实测）：KDNET `net:port=50000,key=...`、COM1 串口 `com:port=com1,baud=115200`（PVE 环境）、物理串口 `com:port=COM1,baud=115200`。
+**重要**：PVE 实验室权威传输（见 pve-lab/SKILL.md 的 KD transport 段）：
+- 物理串口 COM1：`com:port=COM1,baud=115200`（PVE VM 300）
+- KDNET：`net:port=50000,key=<key>`
+- 命名管道 `com:pipe,...` 仅限仍使用命名管道桥的环境；PVE 拓扑中不存在命名管道。
 
 **重要**：PVE 环境下启动顺序必须为：WinDbg 先启动并进入等待状态 → 然后启动 PVE VM，WinDbg 才能自动连接。
 

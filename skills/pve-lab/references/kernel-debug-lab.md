@@ -171,13 +171,13 @@ qm set <vmid> -serial0 socket,server,nowait,port=50000
 com:port=<lab-host>:50000,target=kernel
 ```
 
-### 三种格式（open_kd_session 实测支持）
+### 传输格式（以 pve-lab/SKILL.md 的 KD transport 段为准）
 
-| 方式 | 格式 | 适用 |
-|------|------|------|
-| COM1 串口（标准） | `com:port=com1,baud=115200` | PVE 环境下使用 COM1 端口 |
-| TCP 直连 | `com:port=<host>:50000,target=kernel` | PVE TCP socket 模式 |
-| KDNET | `net:port=50000,key=<32位key>` | Win8.1+，最快 |
+**PVE 实验室权威传输**：
+- 物理串口 COM1：`com:port=COM1,baud=115200`（PVE VM 300）
+- KDNET：`net:port=50000,key=<key>`
+
+命名管道 `com:pipe,...` 仅限仍使用命名管道桥的环境；PVE 拓扑中不存在命名管道。
 
 惯例默认值：波特率 115200。
 
@@ -187,7 +187,6 @@ com:port=<lab-host>:50000,target=kernel
 # 本实验室环境值（不提交）
 - target_vmid: 300
 - socket_path: /var/run/qemu-server/300.serial0
-- pipe_name: com_1
 - baud: 115200
 - windbg_mcp: http://192.168.100.175:8765/mcp/
 - pve_mcp: http://192.168.100.175:8767/mcp/

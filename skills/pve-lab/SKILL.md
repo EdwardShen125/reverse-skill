@@ -32,6 +32,18 @@ description: Use for Proxmox VE lab infrastructure via the LAN pve-mcp server: t
 
 PVE 使用统一的 REST API，通过 vm_id（数字，如 300）标识 VM。串口配置通过 VM config 修改。
 
+## KD transport (authoritative for this lab)
+
+```text
+com:port=COM1,baud=115200
+
+- Physical serial COM1 on the WinDbg host. No named pipe exists in the PVE topology.
+- \\.\pipe\com_1 strings are VMware-era legacy from the retired FNJ9E3 target
+  and MUST NOT be used against PVE VM 300.
+
+- Serial KD procedure for VM 300: path precheck → kd listener first → then boot.
+```
+
 ## 纪律（MUST）
 
 ### 隔离纪律
